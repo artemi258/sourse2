@@ -1619,7 +1619,8 @@ __webpack_require__.r(__webpack_exports__);
 
 function slider(slides, direct, prev, next) {
   var items = document.querySelectorAll(slides);
-  var indexSlider = 1;
+  var indexSlider = 1,
+      paused = false;
 
   function showSlider(n) {
     if (n > items.length) {
@@ -1649,27 +1650,39 @@ function slider(slides, direct, prev, next) {
     prevBtn.addEventListener('click', function () {
       plusSlides(-1);
       items[indexSlider - 1].classList.remove('animate__slideInLeft');
-      items[indexSlider - 1].classList.add('animate__slideInRight');
+      items[indexSlider - 1].classList.add('animate__fadeInRight');
     });
     nextBtn.addEventListener('click', function () {
       plusSlides(1);
       items[indexSlider - 1].classList.remove('animate__slideInRight');
-      items[indexSlider - 1].classList.add('animate__slideInLeft');
+      items[indexSlider - 1].classList.add('animate__fadeInLeft');
     });
   } catch (error) {}
 
-  setInterval(function autoSlider() {
+  function animations() {
     if (direct === 'vertical') {
-      items.forEach(function (item) {
-        item.classList.add('animate__slideInDown', 'wow', 'animate__animated');
-      });
-      plusSlides(1);
+      paused = setInterval(function () {
+        plusSlides(1);
+        items.forEach(function (item) {
+          item.classList.add('animate__slideInDown');
+        });
+      }, 3000);
     } else {
-      plusSlides(1);
-      items[indexSlider - 1].classList.remove('animate__slideInRight');
-      items[indexSlider - 1].classList.add('animate__slideInLeft');
+      paused = setInterval(function () {
+        plusSlides(1);
+        items[indexSlider - 1].classList.remove('animate__slideInRight');
+        items[indexSlider - 1].classList.add('animate__slideInLeft');
+      }, 3000);
     }
-  }, 3000);
+  }
+
+  animations();
+  items[0].parentNode.addEventListener('mouseover', function () {
+    clearInterval(paused);
+  });
+  items[0].parentNode.addEventListener('mouseout', function () {
+    animations();
+  });
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (slider);

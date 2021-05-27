@@ -1,9 +1,10 @@
 function slider(slides, direct, prev, next) {
 
     const items = document.querySelectorAll(slides);
+                  
           
-          
-        let  indexSlider = 1;
+        let  indexSlider = 1,
+             paused = false;
         
         function showSlider(n) {
             if (n > items.length) {
@@ -37,14 +38,14 @@ function slider(slides, direct, prev, next) {
             prevBtn.addEventListener('click', () => {
                 plusSlides(-1);
                 items[indexSlider - 1].classList.remove('animate__slideInLeft');
-                items[indexSlider - 1].classList.add('animate__slideInRight');
+                items[indexSlider - 1].classList.add('animate__fadeInRight');
 
             });
     
             nextBtn.addEventListener('click', () => {
                 plusSlides(1);
                 items[indexSlider - 1].classList.remove('animate__slideInRight');
-                items[indexSlider - 1].classList.add('animate__slideInLeft');
+                items[indexSlider - 1].classList.add('animate__fadeInLeft');
             });
 
             
@@ -52,18 +53,36 @@ function slider(slides, direct, prev, next) {
             
         }
 
-     setInterval(function autoSlider() {
-        if (direct === 'vertical') {
-            items.forEach(item => {
-                item.classList.add('animate__slideInDown', 'wow', 'animate__animated');
-            });
-            plusSlides(1);
-        } else {
-            plusSlides(1);
-                items[indexSlider - 1].classList.remove('animate__slideInRight');
-                items[indexSlider - 1].classList.add('animate__slideInLeft');
-        }
-     }, 3000);   
+     function animations() {
+        
+            if (direct === 'vertical') {
+        paused = setInterval(function() {
+                    plusSlides(1);
+                    items.forEach(item => {
+                    item.classList.add('animate__slideInDown');
+                });
+             }, 3000);      
+            } else {
+        paused = setInterval(() => {
+                    plusSlides(1);
+                    items[indexSlider - 1].classList.remove('animate__slideInRight');
+                    items[indexSlider - 1].classList.add('animate__slideInLeft');
+                }, 3000);    
+            }
+         }
+
+         animations();
+
+         items[0].parentNode.addEventListener('mouseover', () => {
+             clearInterval(paused);
+         });
+         items[0].parentNode.addEventListener('mouseout', () => {
+            animations();
+        });
+     
+
+
+
 
 }
 
