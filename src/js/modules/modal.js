@@ -23,6 +23,7 @@ function modals() {
 
                     windows.forEach(item => {
                         item.style.display = 'none';
+                        item.classList.add('wow', 'animate__animated', 'animate__fadeIn');
                     });
         
                     modalEngineer.style.display = 'block';
