@@ -22,6 +22,15 @@
 
         const  postData = async (url, data) => {
 
+        let statusImg = document.createElement('img');   
+            statusImg.classList.add('imgFadeInUp');                                                                        
+            statusImg.setAttribute('src', message.spinner);
+            statusMessage.appendChild(statusImg);
+
+        let textMessage = document.createElement('div');
+            textMessage.textContent = message.loading;
+            statusMessage.appendChild(textMessage);
+
             // document.querySelector('.status').textContent = message.loading;
             let res = await fetch(url, {
                 method: "POST",
@@ -44,24 +53,20 @@
                 e.preventDefault();
 
                 let statusMessage = document.createElement('div');
-                statusMessage.classList.add('status');
-                item.parentNode.appendChild(statusMessage);
+                    statusMessage.classList.add('status');
+                    item.parentNode.appendChild(statusMessage);
 
-                item.classList.add('wow', 'animate__animated', 'animate__fadeOutUp');
-             setTimeout(() => {
-                item.style.display = 'none';
-             }, 400);   
 
-                let statusImg = document.createElement('img');                                                                              
-                    statusImg.setAttribute('src', message.spinner);
-                    statusImg.classList.add('wow', 'animate__animated', 'animate__fadeInUp');
-                    statusMessage.appendChild(statusImg);
+                item.classList.remove('formStyleBottom');
+                item.classList.add('formStyleUp');
+                setTimeout(() => {
+                   item.style.display = 'none';
+                }, 500);   
 
-                    
+                
+               
 
-                let textMessage = document.createElement('div');
-                    textMessage.textContent = message.loading;
-                    statusMessage.appendChild(textMessage);
+               
 
                   
 
@@ -74,8 +79,8 @@
 
                 postData(api, formData)
                 .then(res => {
-                    console.log(res);
                     statusImg.setAttribute('src', message.ok);
+                    console.log(res);
                     textMessage.textContent = message.success;
                     
                 })
@@ -84,11 +89,11 @@
                 })
                 .finally(() => {
                     clearInput();
-                    item.classList.remove('animate__fadeOutUp');
                     setTimeout(() => {
                         statusMessage.remove();
                         item.style.display = 'block';
-                        item.classList.add('animate__fadeInUp');
+                        item.classList.remove('formStyleUp');
+                        item.classList.add('formStyleBottom');
                     }, 5000);
                 });
 

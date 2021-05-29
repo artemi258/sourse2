@@ -1725,3 +1725,67 @@ h4 {
     width: 25rem;
   }
 }
+
+@keyframes fadeUp {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    transform: translate3d(0, -100%, 0);
+  }
+}
+@keyframes fadeBottom {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -100%, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateZ(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 100%, 0);
+}
+
+to {
+    opacity: 1;
+    transform: translateZ(0);
+}
+}
+
+@keyframes fadeInImg {
+  0% {
+      opacity: 0
+  }
+
+  to {
+      opacity: 1
+  }
+}
+
+
+.formStyleUp {
+  animation-name: fadeUp;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+}
+
+.formStyleBottom {
+  animation-name: fadeBottom;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+}
+
+.imgFadeInUp {
+  animation: fadeInUp 0.5s linear;
+}
+.imgFadeIn {
+  animation: fadeInImg 1s linear;
+}

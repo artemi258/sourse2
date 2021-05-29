@@ -4063,26 +4063,34 @@ function forms() {
   };
 
   var postData = function postData(url, data) {
-    var res;
+    var statusImg, textMessage, res;
     return regeneratorRuntime.async(function postData$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _context.next = 2;
+            statusImg = document.createElement('img');
+            statusImg.classList.add('imgFadeInUp');
+            statusImg.setAttribute('src', message.spinner);
+            statusMessage.appendChild(statusImg);
+            textMessage = document.createElement('div');
+            textMessage.textContent = message.loading;
+            statusMessage.appendChild(textMessage); // document.querySelector('.status').textContent = message.loading;
+
+            _context.next = 9;
             return regeneratorRuntime.awrap(fetch(url, {
               method: "POST",
               body: data
             }));
 
-          case 2:
+          case 9:
             res = _context.sent;
-            _context.next = 5;
+            _context.next = 12;
             return regeneratorRuntime.awrap(res.text());
 
-          case 5:
+          case 12:
             return _context.abrupt("return", _context.sent);
 
-          case 6:
+          case 13:
           case "end":
             return _context.stop();
         }
@@ -4102,34 +4110,28 @@ function forms() {
       var statusMessage = document.createElement('div');
       statusMessage.classList.add('status');
       item.parentNode.appendChild(statusMessage);
-      item.classList.add('wow', 'animate__animated', 'animate__fadeOutUp');
+      item.classList.remove('formStyleBottom');
+      item.classList.add('formStyleUp');
       setTimeout(function () {
         item.style.display = 'none';
-      }, 400);
-      var statusImg = document.createElement('img');
-      statusImg.setAttribute('src', message.spinner);
-      statusImg.classList.add('wow', 'animate__animated', 'animate__fadeInUp');
-      statusMessage.appendChild(statusImg);
-      var textMessage = document.createElement('div');
-      textMessage.textContent = message.loading;
-      statusMessage.appendChild(textMessage);
+      }, 500);
       var formData = new FormData(item);
       var api;
       item.closest('.popup-design') ? api = path.designer : api = path.question;
       console.log(api);
       postData(api, formData).then(function (res) {
-        console.log(res);
         statusImg.setAttribute('src', message.ok);
+        console.log(res);
         textMessage.textContent = message.success;
       }).catch(function () {
         statusMessage.textContent = message.error;
       }).finally(function () {
         clearInput();
-        item.classList.remove('animate__fadeOutUp');
         setTimeout(function () {
           statusMessage.remove();
           item.style.display = 'block';
-          item.classList.add('animate__fadeInUp');
+          item.classList.remove('formStyleUp');
+          item.classList.add('formStyleBottom');
         }, 5000);
       });
     });
