@@ -1,10 +1,9 @@
-// import checkNumInputs from "./checkNumInputs";
 
    function forms() {
         const form = document.querySelectorAll('form'),
-              input = document.querySelectorAll('input');
+              input = document.querySelectorAll('input'),
+              upLoad = document.querySelectorAll('[name="upload"]');
 
-        // checkNumInputs('input[name="user_phone"]');
 
         const message = {
             loading: 'Загрузка...',
@@ -21,32 +20,31 @@
         };
 
         const  postData = async (url, data) => {
-
-        let statusImg = document.createElement('img');   
-            statusImg.classList.add('imgFadeInUp');                                                                        
-            statusImg.setAttribute('src', message.spinner);
-            statusMessage.appendChild(statusImg);
-
-        let textMessage = document.createElement('div');
-            textMessage.textContent = message.loading;
-            statusMessage.appendChild(textMessage);
-
-            // document.querySelector('.status').textContent = message.loading;
             let res = await fetch(url, {
                 method: "POST",
                 body: data
             });
-
             return await res.text();
-                  
-
         };
 
        const clearInput = () => {
            input.forEach(item => {
                item.value = '';
            });
+           upLoad.forEach(item => {
+               item.previousElementSibling.textContent = 'Файл не выбран';
+           });
        };
+
+       upLoad.forEach(item => {
+            item.addEventListener('input', () => {
+                let dots;
+                const arr = item.files[0].name.split('.');
+                arr[0].length > 10 ? dots = '...' : dots = '.';
+                const name = arr[0].substring(0, 11) + dots + arr[1];
+                item.previousElementSibling.textContent = name ;
+            });
+       });
 
         form.forEach(item => {
             item.addEventListener('submit', (e) => {
@@ -56,33 +54,34 @@
                     statusMessage.classList.add('status');
                     item.parentNode.appendChild(statusMessage);
 
-
                 item.classList.remove('formStyleBottom');
                 item.classList.add('formStyleUp');
+
                 setTimeout(() => {
                    item.style.display = 'none';
                 }, 500);   
 
-                
-               
-
-               
-
-                  
+                let statusImg = document.createElement('img');   
+                    statusImg.classList.add('imgFadeInUp');                                                                        
+                    statusImg.setAttribute('src', message.spinner);
+                    statusMessage.appendChild(statusImg);
+    
+                let textMessage = document.createElement('div');
+                    textMessage.textContent = message.loading;
+                    statusMessage.appendChild(textMessage);
 
                 const formData = new FormData(item);
 
                 let api;
 
-                item.closest('.popup-design') ? api = path.designer : api = path.question;
+                item.closest('.popup-design') || item.classList.contains('calc_form') ? api = path.designer : api = path.question;
                 console.log(api);
 
                 postData(api, formData)
                 .then(res => {
-                    statusImg.setAttribute('src', message.ok);
                     console.log(res);
+                    statusImg.setAttribute('src', message.ok);
                     textMessage.textContent = message.success;
-                    
                 })
                 .catch(() => {
                     statusMessage.textContent = message.error;
