@@ -4891,6 +4891,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_checkMask__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/checkMask */ "./src/js/modules/checkMask.js");
 /* harmony import */ var _modules_checkTextInputs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/checkTextInputs */ "./src/js/modules/checkTextInputs.js");
 /* harmony import */ var _modules_cards__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/cards */ "./src/js/modules/cards.js");
+/* harmony import */ var _modules_calc__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/calc */ "./src/js/modules/calc.js");
+
 
 
 
@@ -4910,7 +4912,61 @@ window.addEventListener('DOMContentLoaded', function () {
   Object(_modules_checkTextInputs__WEBPACK_IMPORTED_MODULE_5__["default"])('[name="name"]');
   Object(_modules_checkTextInputs__WEBPACK_IMPORTED_MODULE_5__["default"])('[name="message"]');
   Object(_modules_cards__WEBPACK_IMPORTED_MODULE_6__["default"])('.button-styles', '.style_cards');
+  Object(_modules_calc__WEBPACK_IMPORTED_MODULE_7__["default"])('.calc_form', '#size', '#material', '#options', '.calc-price');
 });
+
+/***/ }),
+
+/***/ "./src/js/modules/calc.js":
+/*!********************************!*\
+  !*** ./src/js/modules/calc.js ***!
+  \********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function calc(calcForm, blockSize, blockMaterial, blockOptions, price) {
+  var calc = document.querySelector(calcForm),
+      size = document.querySelectorAll(blockSize),
+      material = document.querySelectorAll(blockMaterial),
+      options = document.querySelectorAll(blockOptions),
+      calcPrice = document.querySelector(price);
+  var product = {};
+  var productPrice = {};
+
+  function calculatingPrice() {}
+
+  function calculation(event, elem, type) {
+    elem.forEach(function (item, i) {
+      item.addEventListener(event, function () {
+        switch (item.nodeName) {
+          case 'SELECT':
+            product[type] = item.value;
+            productPrice[type] = item;
+            console.log(product);
+            console.log(productPrice);
+            break;
+
+          default:
+            console.log('tam');
+            break;
+        }
+      });
+    });
+  }
+
+  calculation('change', size, 'size');
+  calculation('change', material, 'material');
+  calculation('change', options, 'options');
+}
+
+;
+/* harmony default export */ __webpack_exports__["default"] = (calc);
 
 /***/ }),
 

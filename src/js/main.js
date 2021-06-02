@@ -5,6 +5,7 @@ import forms from './modules/forms';
 import checkMask from './modules/checkMask';
 import checkTextInputs from './modules/checkTextInputs';
 import cards from './modules/cards';
+import calc from './modules/calc';
 
 new WOW().init();
 
@@ -19,4 +20,5 @@ window.addEventListener('DOMContentLoaded', () => {
         checkTextInputs('[name="name"]');
         checkTextInputs('[name="message"]');
         cards('.button-styles', '.style_cards');
+        calc('.calc_form', '#size', '#material', '#options', '.calc-price');
 });
