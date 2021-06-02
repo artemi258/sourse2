@@ -1785,7 +1785,7 @@ to {
 }
 
 .imgFadeInUp {
-  animation: fadeInUp 0.5s linear;
+  animation: fadeInUp 1s linear;
 }
 .imgFadeIn {
   animation: fadeInImg 1s linear;
