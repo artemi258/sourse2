@@ -4912,7 +4912,7 @@ window.addEventListener('DOMContentLoaded', function () {
   Object(_modules_checkTextInputs__WEBPACK_IMPORTED_MODULE_5__["default"])('[name="name"]');
   Object(_modules_checkTextInputs__WEBPACK_IMPORTED_MODULE_5__["default"])('[name="message"]');
   Object(_modules_cards__WEBPACK_IMPORTED_MODULE_6__["default"])('.button-styles', '.style_cards');
-  Object(_modules_calc__WEBPACK_IMPORTED_MODULE_7__["default"])('.calc_form', '#size', '#material', '#options', '.calc-price');
+  Object(_modules_calc__WEBPACK_IMPORTED_MODULE_7__["default"])('.promocode', '#size', '#material', '#options', '.calc-price');
 });
 
 /***/ }),
@@ -4933,36 +4933,49 @@ __webpack_require__.r(__webpack_exports__);
 function calc(calcForm, blockSize, blockMaterial, blockOptions, price) {
   var calc = document.querySelector(calcForm),
       size = document.querySelectorAll(blockSize),
+      sizeElem = size[0].querySelectorAll('option'),
       material = document.querySelectorAll(blockMaterial),
+      materialElem = material[0].querySelectorAll('option'),
       options = document.querySelectorAll(blockOptions),
+      optionsElem = options[0].querySelectorAll('option'),
       calcPrice = document.querySelector(price);
   var product = {};
   var productPrice = {};
 
-  function calculatingPrice() {}
+  function calculatingPrice(elem, meaning) {}
 
-  function calculation(event, elem, type) {
-    elem.forEach(function (item, i) {
+  function createPrice(event, elem, type) {
+    elem.forEach(function (item) {
       item.addEventListener(event, function () {
-        switch (item.nodeName) {
-          case 'SELECT':
-            product[type] = item.value;
-            productPrice[type] = item;
-            console.log(product);
-            console.log(productPrice);
-            break;
-
-          default:
-            console.log('tam');
-            break;
-        }
+        productPrice[type] = item.value;
+        createProduct(sizeElem, type);
+        createProduct(materialElem, type);
+        createProduct(optionsElem, type);
+        console.log(productPrice);
+        console.log(product);
       });
     });
   }
 
-  calculation('change', size, 'size');
-  calculation('change', material, 'material');
-  calculation('change', options, 'options');
+  function createProduct(elem, type) {
+    elem.forEach(function (item) {
+      if (item.getAttribute('value') == productPrice.size) {
+        product[type] = item.textContent;
+      }
+
+      if (item.getAttribute('value') == productPrice.material) {
+        product[type] = item.textContent;
+      }
+
+      if (item.getAttribute('value') == productPrice.options) {
+        product[type] = item.textContent;
+      }
+    });
+  }
+
+  createPrice('change', size, 'size');
+  createPrice('change', material, 'material');
+  createPrice('change', options, 'options'); //   calculation('input', calc, 'promocode');
 }
 
 ;
