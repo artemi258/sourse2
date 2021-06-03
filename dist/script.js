@@ -4912,7 +4912,7 @@ window.addEventListener('DOMContentLoaded', function () {
   Object(_modules_checkTextInputs__WEBPACK_IMPORTED_MODULE_5__["default"])('[name="name"]');
   Object(_modules_checkTextInputs__WEBPACK_IMPORTED_MODULE_5__["default"])('[name="message"]');
   Object(_modules_cards__WEBPACK_IMPORTED_MODULE_6__["default"])('.button-styles', '.style_cards');
-  Object(_modules_calc__WEBPACK_IMPORTED_MODULE_7__["default"])('.promocode', '#size', '#material', '#options', '.calc-price');
+  Object(_modules_calc__WEBPACK_IMPORTED_MODULE_7__["default"])('.promocode', '#size', '#material', '#options', '.calc-price', '.calc .button-order');
 });
 
 /***/ }),
@@ -4930,27 +4930,47 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__);
 
 
-function calc(calcForm, blockSize, blockMaterial, blockOptions, price) {
-  var calc = document.querySelector(calcForm),
+function calc(promocode, blockSize, blockMaterial, blockOptions, price, button) {
+  var promocod = document.querySelectorAll(promocode),
       size = document.querySelectorAll(blockSize),
       sizeElem = size[0].querySelectorAll('option'),
       material = document.querySelectorAll(blockMaterial),
       materialElem = material[0].querySelectorAll('option'),
       options = document.querySelectorAll(blockOptions),
       optionsElem = options[0].querySelectorAll('option'),
-      calcPrice = document.querySelector(price);
+      calcPrice = document.querySelector(price),
+      buttonForm = document.querySelector(button);
+  buttonForm.disabled = true;
   var product = {};
   var productPrice = {};
 
-  function calculatingPrice(elem, meaning) {}
+  function calculatingPrice() {
+    if (!productPrice.size || productPrice.size == '' || !productPrice.material || productPrice.material == '') {
+      calcPrice.textContent = 'Выберите размер и материал картины';
+    } else if (productPrice.size && productPrice.size !== '' && productPrice.material && productPrice.material !== '') {
+      calcPrice.textContent = +productPrice.size * +productPrice.material;
+      buttonForm.disabled = false;
+    }
+
+    if (productPrice.size && productPrice.size !== '' && productPrice.material && productPrice.material !== '' && productPrice.options && productPrice.options !== '') {
+      calcPrice.textContent = +productPrice.size * +productPrice.material + +productPrice.options;
+    }
+
+    if (productPrice.promocod === 'IWANTPOPART') {
+      var sum = +calcPrice.textContent * 0.7;
+      calcPrice.textContent = sum;
+    }
+  }
 
   function createPrice(event, elem, type) {
     elem.forEach(function (item) {
       item.addEventListener(event, function () {
-        productPrice[type] = item.value;
+        productPrice[type] = item.value; // добавление цены услуги
+
         createProduct(sizeElem, type);
         createProduct(materialElem, type);
         createProduct(optionsElem, type);
+        calculatingPrice();
         console.log(productPrice);
         console.log(product);
       });
@@ -4958,16 +4978,9 @@ function calc(calcForm, blockSize, blockMaterial, blockOptions, price) {
   }
 
   function createProduct(elem, type) {
+    // добавление наименования услуги
     elem.forEach(function (item) {
-      if (item.getAttribute('value') == productPrice.size) {
-        product[type] = item.textContent;
-      }
-
-      if (item.getAttribute('value') == productPrice.material) {
-        product[type] = item.textContent;
-      }
-
-      if (item.getAttribute('value') == productPrice.options) {
+      if (item.getAttribute('value') == productPrice[type]) {
         product[type] = item.textContent;
       }
     });
@@ -4975,7 +4988,8 @@ function calc(calcForm, blockSize, blockMaterial, blockOptions, price) {
 
   createPrice('change', size, 'size');
   createPrice('change', material, 'material');
-  createPrice('change', options, 'options'); //   calculation('input', calc, 'promocode');
+  createPrice('change', options, 'options');
+  createPrice('input', promocod, 'promocod');
 }
 
 ;

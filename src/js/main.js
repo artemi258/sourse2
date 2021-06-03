@@ -20,5 +20,5 @@ window.addEventListener('DOMContentLoaded', () => {
         checkTextInputs('[name="name"]');
         checkTextInputs('[name="message"]');
         cards('.button-styles', '.style_cards');
-        calc('.promocode', '#size', '#material', '#options', '.calc-price');
+        calc('.promocode', '#size', '#material', '#options', '.calc-price', '.calc .button-order');
 });
