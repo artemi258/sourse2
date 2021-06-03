@@ -4957,6 +4957,7 @@ function calc(promocode, blockSize, blockMaterial, blockOptions, price, button) 
     }
 
     if (productPrice.promocod === 'IWANTPOPART') {
+      product.promocod = true;
       var sum = +calcPrice.textContent * 0.7;
       calcPrice.textContent = sum;
     }
