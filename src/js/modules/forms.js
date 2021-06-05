@@ -1,5 +1,5 @@
 import {postData} from '../services/requests';
-   function forms() {
+   function forms(product) {
         const form = document.querySelectorAll('form'),
               input = document.querySelectorAll('input'),
               upLoad = document.querySelectorAll('[name="upload"]');
@@ -18,8 +18,6 @@ import {postData} from '../services/requests';
             designer: 'assets/server.php',
             question: 'assets/question.php'
         };
-
-        
 
        const clearInput = () => {
            input.forEach(item => {
@@ -66,12 +64,22 @@ import {postData} from '../services/requests';
 
                 const formData = new FormData(item);
 
+                
+
                 let api;
 
-                item.closest('.popup-design') || item.classList.contains('calc_form') ? api = path.designer : api = path.question;
+                item.closest('.popup-design') || item.classList.contains('calc_form') ? api = 'http://localhost:3000/user' : api = 'http://localhost:3000/user';
                 console.log(api);
 
-                postData(api, formData)
+             if (api == 'http://localhost:3000/user') {
+               for (let key in product) {
+                   formData.append(key, product[key]);
+               }
+             }
+
+             const json = JSON.stringify(Object.fromEntries(formData.entries()));
+
+                postData(api, json)
                 .then(res => {
                     console.log(res);
                     statusImg.setAttribute('src', message.ok);

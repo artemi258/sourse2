@@ -1,4 +1,4 @@
-function calc(promocode, blockSize, blockMaterial, blockOptions, price, button) {
+function calc(promocode, blockSize, blockMaterial, blockOptions, price, button, product) {
     const promocod = document.querySelectorAll(promocode),
           size = document.querySelectorAll(blockSize),
           sizeElem = size[0].querySelectorAll('option'),
@@ -11,7 +11,7 @@ function calc(promocode, blockSize, blockMaterial, blockOptions, price, button) 
 
           buttonForm.disabled = true;
 
-          let product = {};
+          
           let productPrice = {};
 
           function calculatingPrice() {

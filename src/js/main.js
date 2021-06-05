@@ -12,13 +12,15 @@ new WOW().init();
 window.addEventListener('DOMContentLoaded', () => {
         'use strick';
 
+        let product = {};
+
         modals();
         slider('.feedback-slider-item', '', '.main-prev-btn', '.main-next-btn');
         slider('.main-slider-item', 'vertical');
-        forms();
+        forms(product);
         checkMask('[name="phone"]');
         checkTextInputs('[name="name"]');
         checkTextInputs('[name="message"]');
         cards('.button-styles', '.style_cards');
-        calc('.promocode', '#size', '#material', '#options', '.calc-price', '.calc .button-order');
+        calc('.promocode', '#size', '#material', '#options', '.calc-price', '.calc .button-order', product);
 });
