@@ -5476,6 +5476,8 @@ window.addEventListener('DOMContentLoaded', function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
 /* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _services_requests__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../services/requests */ "./src/js/services/requests.js");
+
 
 
 function calc(promocode, blockSize, blockMaterial, blockOptions, price, button, product) {
@@ -5491,22 +5493,46 @@ function calc(promocode, blockSize, blockMaterial, blockOptions, price, button, 
   buttonForm.disabled = true;
   var productPrice = {};
 
+  function currentPrices(api, optionElem) {
+    Object(_services_requests__WEBPACK_IMPORTED_MODULE_1__["getResourse"])(api).then(function (item) {
+      createOptions(item, optionElem);
+    }).catch();
+  }
+
+  function createOptions(resul, optionElem) {
+    resul.forEach(function (_ref) {
+      var price1 = _ref.price1,
+          price2 = _ref.price2,
+          price3 = _ref.price3,
+          price4 = _ref.price4;
+      var resulMass = [price1, price2, price3, price4];
+
+      for (var i = 1; i < optionElem.length; i++) {
+        optionElem[i].value = resulMass[i - 1];
+      }
+    });
+  }
+
+  currentPrices('http://localhost:3000/size', sizeElem);
+  currentPrices('http://localhost:3000/material', materialElem);
+  currentPrices('http://localhost:3000/options', optionsElem);
+
   function calculatingPrice() {
     if (!productPrice.size || productPrice.size == '' || !productPrice.material || productPrice.material == '') {
       calcPrice.textContent = 'Выберите размер и материал картины';
     } else if (productPrice.size && productPrice.size !== '' && productPrice.material && productPrice.material !== '') {
-      calcPrice.textContent = +productPrice.size * +productPrice.material;
+      product.price = Math.round(calcPrice.textContent = +productPrice.size * +productPrice.material);
       buttonForm.disabled = false;
     }
 
     if (productPrice.size && productPrice.size !== '' && productPrice.material && productPrice.material !== '' && productPrice.options && productPrice.options !== '') {
-      calcPrice.textContent = +productPrice.size * +productPrice.material + +productPrice.options;
+      product.price = Math.round(calcPrice.textContent = +productPrice.size * +productPrice.material + +productPrice.options);
     }
 
     if (productPrice.promocod === 'IWANTPOPART') {
       product.promocod = true;
-      var sum = +calcPrice.textContent * 0.7;
-      calcPrice.textContent = sum;
+      var sum = Math.round(+calcPrice.textContent * 0.7);
+      product.price = calcPrice.textContent = sum;
     }
   }
 

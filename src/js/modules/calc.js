@@ -1,5 +1,7 @@
+import {getResourse} from '../services/requests';
+
 function calc(promocode, blockSize, blockMaterial, blockOptions, price, button, product) {
-    const promocod = document.querySelectorAll(promocode),
+    let promocod = document.querySelectorAll(promocode),
           size = document.querySelectorAll(blockSize),
           sizeElem = size[0].querySelectorAll('option'),
           material = document.querySelectorAll(blockMaterial),
@@ -11,26 +13,49 @@ function calc(promocode, blockSize, blockMaterial, blockOptions, price, button, 
 
           buttonForm.disabled = true;
 
-          
           let productPrice = {};
 
+          function currentPrices(api, optionElem) {
+            getResourse(api)
+            .then(item => {
+                createOptions(item, optionElem);
+            })
+            .catch();
+          }
+
+          function createOptions(resul, optionElem) {
+
+                resul.forEach(({price1, price2, price3, price4}) => {
+
+                 let resulMass = [price1, price2, price3, price4];
+
+                 for (let i = 1; i < optionElem.length; i++) {
+                    optionElem[i].value = resulMass[i - 1];
+                 }
+            });
+          }
+
+          currentPrices('http://localhost:3000/size', sizeElem);
+          currentPrices('http://localhost:3000/material', materialElem);
+          currentPrices('http://localhost:3000/options', optionsElem);
+          
           function calculatingPrice() {
 
                 if (!productPrice.size || productPrice.size == '' || !productPrice.material || productPrice.material == '') {
                     calcPrice.textContent = 'Выберите размер и материал картины';
                 } else if (productPrice.size && productPrice.size !== '' && productPrice.material && productPrice.material !== '') {
-                    calcPrice.textContent = (+productPrice.size) * (+productPrice.material);
+                   product.price = Math.round(calcPrice.textContent = (+productPrice.size) * (+productPrice.material));
                     buttonForm.disabled = false;
                 } 
 
-                if (productPrice.size && productPrice.size !== '' && productPrice.material && productPrice.material !== '' &&productPrice.options && productPrice.options !== '') {
-                    calcPrice.textContent = (+productPrice.size) * (+productPrice.material) + (+productPrice.options);
+                if (productPrice.size && productPrice.size !== '' && productPrice.material && productPrice.material !== '' && productPrice.options && productPrice.options !== '') {
+                    product.price = Math.round(calcPrice.textContent = (+productPrice.size) * (+productPrice.material) + (+productPrice.options));
                 }
 
                 if (productPrice.promocod === 'IWANTPOPART') {
                     product.promocod = true;
-                    let sum = +calcPrice.textContent * 0.7;
-                    calcPrice.textContent = sum;
+                    let sum = Math.round(+calcPrice.textContent * 0.7);
+                    product.price = calcPrice.textContent = sum;
                 }
 
           }
