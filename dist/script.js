@@ -5439,6 +5439,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_checkTextInputs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/checkTextInputs */ "./src/js/modules/checkTextInputs.js");
 /* harmony import */ var _modules_cards__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/cards */ "./src/js/modules/cards.js");
 /* harmony import */ var _modules_calc__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/calc */ "./src/js/modules/calc.js");
+/* harmony import */ var _modules_filter__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modules/filter */ "./src/js/modules/filter.js");
+
 
 
 
@@ -5461,6 +5463,7 @@ window.addEventListener('DOMContentLoaded', function () {
   Object(_modules_checkTextInputs__WEBPACK_IMPORTED_MODULE_5__["default"])('[name="message"]');
   Object(_modules_cards__WEBPACK_IMPORTED_MODULE_6__["default"])('.button-styles', '.style_cards');
   Object(_modules_calc__WEBPACK_IMPORTED_MODULE_7__["default"])('.promocode', '#size', '#material', '#options', '.calc-price', '.calc .button-order', product);
+  Object(_modules_filter__WEBPACK_IMPORTED_MODULE_8__["default"])();
 });
 
 /***/ }),
@@ -5511,11 +5514,10 @@ function calc(promocode, blockSize, blockMaterial, blockOptions, price, button, 
         optionElem[i].value = resulMass[i - 1];
       }
     });
-  }
+  } //   currentPrices('http://localhost:3000/size', sizeElem);
+  //   currentPrices('http://localhost:3000/material', materialElem);
+  //   currentPrices('http://localhost:3000/options', optionsElem);
 
-  currentPrices('http://localhost:3000/size', sizeElem);
-  currentPrices('http://localhost:3000/material', materialElem);
-  currentPrices('http://localhost:3000/options', optionsElem);
 
   function calculatingPrice() {
     if (!productPrice.size || productPrice.size == '' || !productPrice.material || productPrice.material == '') {
@@ -5713,6 +5715,65 @@ function checkTextInputs(selector) {
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (checkTextInputs);
+
+/***/ }),
+
+/***/ "./src/js/modules/filter.js":
+/*!**********************************!*\
+  !*** ./src/js/modules/filter.js ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function filter() {
+  var menu = document.querySelector('.portfolio-menu'),
+      menuTab = menu.querySelectorAll('.tab'),
+      wrapperImg = document.querySelectorAll('.portfolio-wrapper .all'),
+      portfNo = document.querySelector('.portfolio-no');
+
+  function hideFilter(i, photo) {
+    wrapperImg.forEach(function (item) {
+      item.classList.remove('imgFadeIn');
+      item.style.display = 'none';
+    });
+    menuTab.forEach(function (item) {
+      item.classList.remove('active');
+    });
+    menuTab[i].classList.add('active');
+    wrapperImg.forEach(function (item) {
+      if (!photo || photo == '') {
+        portfNo.classList.add('imgFadeIn');
+        portfNo.style.display = 'block';
+      } else if (item.classList.contains(photo)) {
+        portfNo.classList.remove('imgFadeIn');
+        portfNo.style.display = 'none';
+        item.classList.add('imgFadeIn');
+        item.style.display = 'block';
+      }
+    });
+  }
+
+  hideFilter(0, 'all');
+  menu.addEventListener('click', function (e) {
+    var target = e.target;
+
+    if (target && target.classList.contains('tab')) {
+      menuTab.forEach(function (item, i) {
+        if (target == item) {
+          hideFilter(i, item.getAttribute('data-portf'));
+        }
+      });
+    }
+  });
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (filter);
 
 /***/ }),
 

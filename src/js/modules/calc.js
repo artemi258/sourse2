@@ -35,9 +35,9 @@ function calc(promocode, blockSize, blockMaterial, blockOptions, price, button, 
             });
           }
 
-          currentPrices('http://localhost:3000/size', sizeElem);
-          currentPrices('http://localhost:3000/material', materialElem);
-          currentPrices('http://localhost:3000/options', optionsElem);
+        //   currentPrices('http://localhost:3000/size', sizeElem);
+        //   currentPrices('http://localhost:3000/material', materialElem);
+        //   currentPrices('http://localhost:3000/options', optionsElem);
           
           function calculatingPrice() {
 
