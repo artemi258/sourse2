@@ -5733,7 +5733,7 @@ __webpack_require__.r(__webpack_exports__);
 
 function filter() {
   var menu = document.querySelector('.portfolio-menu'),
-      menuTab = menu.querySelectorAll('.tab'),
+      menuTab = menu.querySelectorAll('li'),
       wrapperImg = document.querySelectorAll('.portfolio-wrapper .all'),
       portfNo = document.querySelector('.portfolio-no');
 
@@ -5763,7 +5763,7 @@ function filter() {
   menu.addEventListener('click', function (e) {
     var target = e.target;
 
-    if (target && target.classList.contains('tab')) {
+    if (target && target.tagName == 'LI') {
       menuTab.forEach(function (item, i) {
         if (target == item) {
           hideFilter(i, item.getAttribute('data-portf'));
