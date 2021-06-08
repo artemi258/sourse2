@@ -3161,6 +3161,63 @@ addToUnscopables('entries');
 
 /***/ }),
 
+/***/ "./node_modules/core-js/modules/es.array.slice.js":
+/*!********************************************************!*\
+  !*** ./node_modules/core-js/modules/es.array.slice.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js/internals/export.js");
+var isObject = __webpack_require__(/*! ../internals/is-object */ "./node_modules/core-js/internals/is-object.js");
+var isArray = __webpack_require__(/*! ../internals/is-array */ "./node_modules/core-js/internals/is-array.js");
+var toAbsoluteIndex = __webpack_require__(/*! ../internals/to-absolute-index */ "./node_modules/core-js/internals/to-absolute-index.js");
+var toLength = __webpack_require__(/*! ../internals/to-length */ "./node_modules/core-js/internals/to-length.js");
+var toIndexedObject = __webpack_require__(/*! ../internals/to-indexed-object */ "./node_modules/core-js/internals/to-indexed-object.js");
+var createProperty = __webpack_require__(/*! ../internals/create-property */ "./node_modules/core-js/internals/create-property.js");
+var arrayMethodHasSpeciesSupport = __webpack_require__(/*! ../internals/array-method-has-species-support */ "./node_modules/core-js/internals/array-method-has-species-support.js");
+var wellKnownSymbol = __webpack_require__(/*! ../internals/well-known-symbol */ "./node_modules/core-js/internals/well-known-symbol.js");
+
+var SPECIES = wellKnownSymbol('species');
+var nativeSlice = [].slice;
+var max = Math.max;
+
+// `Array.prototype.slice` method
+// https://tc39.github.io/ecma262/#sec-array.prototype.slice
+// fallback for not array-like ES3 strings and DOM objects
+$({ target: 'Array', proto: true, forced: !arrayMethodHasSpeciesSupport('slice') }, {
+  slice: function slice(start, end) {
+    var O = toIndexedObject(this);
+    var length = toLength(O.length);
+    var k = toAbsoluteIndex(start, length);
+    var fin = toAbsoluteIndex(end === undefined ? length : end, length);
+    // inline `ArraySpeciesCreate` for usage native `Array#slice` where it's possible
+    var Constructor, result, n;
+    if (isArray(O)) {
+      Constructor = O.constructor;
+      // cross-realm fallback
+      if (typeof Constructor == 'function' && (Constructor === Array || isArray(Constructor.prototype))) {
+        Constructor = undefined;
+      } else if (isObject(Constructor)) {
+        Constructor = Constructor[SPECIES];
+        if (Constructor === null) Constructor = undefined;
+      }
+      if (Constructor === Array || Constructor === undefined) {
+        return nativeSlice.call(O, k, fin);
+      }
+    }
+    result = new (Constructor === undefined ? Array : Constructor)(max(fin - k, 0));
+    for (n = 0; k < fin; k++, n++) if (k in O) createProperty(result, n, O[k]);
+    result.length = n;
+    return result;
+  }
+});
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js/modules/es.function.name.js":
 /*!**********************************************************!*\
   !*** ./node_modules/core-js/modules/es.function.name.js ***!
@@ -5440,6 +5497,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_cards__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/cards */ "./src/js/modules/cards.js");
 /* harmony import */ var _modules_calc__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/calc */ "./src/js/modules/calc.js");
 /* harmony import */ var _modules_filter__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modules/filter */ "./src/js/modules/filter.js");
+/* harmony import */ var _modules_Replacement__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./modules/Replacement */ "./src/js/modules/Replacement.js");
+
 
 
 
@@ -5464,7 +5523,59 @@ window.addEventListener('DOMContentLoaded', function () {
   Object(_modules_cards__WEBPACK_IMPORTED_MODULE_6__["default"])('.button-styles', '.style_cards');
   Object(_modules_calc__WEBPACK_IMPORTED_MODULE_7__["default"])('.promocode', '#size', '#material', '#options', '.calc-price', '.calc .button-order', product);
   Object(_modules_filter__WEBPACK_IMPORTED_MODULE_8__["default"])();
+  Object(_modules_Replacement__WEBPACK_IMPORTED_MODULE_9__["default"])('.sizes-block');
 });
+
+/***/ }),
+
+/***/ "./src/js/modules/Replacement.js":
+/*!***************************************!*\
+  !*** ./src/js/modules/Replacement.js ***!
+  \***************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var core_js_modules_es_array_slice__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.array.slice */ "./node_modules/core-js/modules/es.array.slice.js");
+/* harmony import */ var core_js_modules_es_array_slice__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_slice__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_1__);
+
+
+
+function replacement(blockSelector) {
+  var block = document.querySelectorAll(blockSelector);
+
+  function showImg(blockImg) {
+    var img = blockImg.querySelector('img');
+    img.src = img.src.slice(0, -4) + '-1.png';
+    blockImg.querySelectorAll('p:not(.sizes-hit)').forEach(function (p) {
+      p.style.display = 'none';
+    });
+  }
+
+  function hideImg(blockImg) {
+    var img = blockImg.querySelector('img');
+    img.src = img.src.slice(0, -6) + '.png';
+    blockImg.querySelectorAll('p:not(.sizes-hit)').forEach(function (p) {
+      p.style.display = 'block';
+    });
+  }
+
+  block.forEach(function (item) {
+    item.addEventListener('mouseenter', function (e) {
+      showImg(e.target);
+    });
+  });
+  block.forEach(function (item) {
+    item.addEventListener('mouseleave', function (e) {
+      hideImg(e.target);
+    });
+  });
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (replacement);
 
 /***/ }),
 

@@ -7,6 +7,7 @@ import checkTextInputs from './modules/checkTextInputs';
 import cards from './modules/cards';
 import calc from './modules/calc';
 import filter from './modules/filter';
+import replacement from './modules/Replacement';
 
 new WOW().init();
 
@@ -25,4 +26,5 @@ window.addEventListener('DOMContentLoaded', () => {
         cards('.button-styles', '.style_cards');
         calc('.promocode', '#size', '#material', '#options', '.calc-price', '.calc .button-order', product);
         filter();
+        replacement('.sizes-block');
 });
