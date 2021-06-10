@@ -1727,6 +1727,21 @@ h4 {
   }
 }
 
+.active-block {
+  color: #fa66f0;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.active-block ::after {
+  content: '←';
+  margin-left: 10px;
+}
+.active-block ::before {
+  content: '→';
+  margin-right: 10px;
+}
+
 @keyframes fadeUp {
   from {
     opacity: 1;

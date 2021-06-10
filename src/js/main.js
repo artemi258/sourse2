@@ -8,6 +8,7 @@ import cards from './modules/cards';
 import calc from './modules/calc';
 import filter from './modules/filter';
 import replacement from './modules/Replacement';
+import accordion from './modules/accordeon';
 
 new WOW().init();
 
@@ -27,4 +28,5 @@ window.addEventListener('DOMContentLoaded', () => {
         calc('.promocode', '#size', '#material', '#options', '.calc-price', '.calc .button-order', product);
         filter();
         replacement('.sizes-block');
+        accordion();
 });

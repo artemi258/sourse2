@@ -5498,6 +5498,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_calc__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/calc */ "./src/js/modules/calc.js");
 /* harmony import */ var _modules_filter__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modules/filter */ "./src/js/modules/filter.js");
 /* harmony import */ var _modules_Replacement__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./modules/Replacement */ "./src/js/modules/Replacement.js");
+/* harmony import */ var _modules_accordeon__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./modules/accordeon */ "./src/js/modules/accordeon.js");
+
 
 
 
@@ -5524,6 +5526,7 @@ window.addEventListener('DOMContentLoaded', function () {
   Object(_modules_calc__WEBPACK_IMPORTED_MODULE_7__["default"])('.promocode', '#size', '#material', '#options', '.calc-price', '.calc .button-order', product);
   Object(_modules_filter__WEBPACK_IMPORTED_MODULE_8__["default"])();
   Object(_modules_Replacement__WEBPACK_IMPORTED_MODULE_9__["default"])('.sizes-block');
+  Object(_modules_accordeon__WEBPACK_IMPORTED_MODULE_10__["default"])();
 });
 
 /***/ }),
@@ -5576,6 +5579,71 @@ function replacement(blockSelector) {
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (replacement);
+
+/***/ }),
+
+/***/ "./src/js/modules/accordeon.js":
+/*!*************************************!*\
+  !*** ./src/js/modules/accordeon.js ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function accordeon() {
+  var text = document.querySelectorAll('.accordion-block'),
+      header = document.querySelectorAll('.accordion-heading');
+
+  function accordeonTextHide(i) {
+    text.forEach(function (item) {
+      item.style.display = 'none';
+      item.classList.remove('animate__fadeOutUp', 'animate__animated', 'wow');
+    });
+    header.forEach(function (item) {
+      item.classList.remove('active-block');
+      item.firstChild.style.borderBottom = '';
+    });
+
+    if (!i) {
+      text.forEach(function (item) {
+        item.style.display = 'none';
+      });
+    }
+
+    if (i >= 0) {
+      text[i].classList.add('animate__fadeInDown', 'animate__animated', 'wow');
+      text[i].style.display = 'block';
+      header[i].classList.add('active-block');
+      header[i].firstChild.style.borderBottom = 'none';
+    }
+  }
+
+  accordeonTextHide();
+  header.forEach(function (item, i) {
+    item.addEventListener('click', function (e) {
+      if (item.classList.contains('active-block')) {
+        text[i].classList.remove('animate__fadeInDown', 'animate__animated', 'wow');
+        text[i].classList.add('animate__fadeOutUp', 'animate__animated', 'wow');
+        setTimeout(function () {
+          text[i].style.display = 'none';
+        }, 400);
+        header.forEach(function (item) {
+          item.classList.remove('active-block');
+          item.firstChild.style.borderBottom = '';
+        });
+      } else if (e.target.parentNode == item) {
+        accordeonTextHide(i);
+      }
+    });
+  });
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (accordeon);
 
 /***/ }),
 
@@ -5857,11 +5925,10 @@ function filter() {
       item.classList.remove('active');
     });
     menuTab[i].classList.add('active');
+    portfNo.classList.add('imgFadeIn');
+    portfNo.style.display = 'block';
     wrapperImg.forEach(function (item) {
-      if (!photo || photo == '') {
-        portfNo.classList.add('imgFadeIn');
-        portfNo.style.display = 'block';
-      } else if (item.classList.contains(photo)) {
+      if (item.classList.contains(photo)) {
         portfNo.classList.remove('imgFadeIn');
         portfNo.style.display = 'none';
         item.classList.add('imgFadeIn');
