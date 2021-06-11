@@ -9,6 +9,7 @@ import calc from './modules/calc';
 import filter from './modules/filter';
 import replacement from './modules/Replacement';
 import accordion from './modules/accordeon';
+import burgerNav from './modules/burger';
 
 new WOW().init();
 
@@ -29,4 +30,5 @@ window.addEventListener('DOMContentLoaded', () => {
         filter();
         replacement('.sizes-block');
         accordion();
+        burgerNav();
 });

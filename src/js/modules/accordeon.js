@@ -1,8 +1,6 @@
 function accordeon() {
     const text = document.querySelectorAll('.accordion-block'),
           header = document.querySelectorAll('.accordion-heading');
-          
-
 
     function accordeonTextHide(i) {
         text.forEach(item => {
@@ -47,7 +45,6 @@ function accordeon() {
             }
         });
     });
-    
 }
 
 export default accordeon;
