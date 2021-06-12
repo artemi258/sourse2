@@ -5604,36 +5604,40 @@ function accordeon() {
 
   function accordeonTextHide(i) {
     text.forEach(function (item) {
-      item.style.display = 'none';
-      item.classList.remove('animate__fadeOutUp', 'animate__animated', 'wow');
+      // item.style.display = 'none';
+      item.style.maxHeight = '0';
+      item.classList.remove('active-text');
     });
     header.forEach(function (item) {
       item.classList.remove('active-block');
-      item.firstChild.style.borderBottom = '';
-    });
+      item.firstChild.style.borderBottom = ''; //'animate__fadeOutUp', 'animate__animated', 'wow',
+    }); //'animate__fadeInDown', 'animate__animated', 'wow',
 
     if (!i) {
       text.forEach(function (item) {
-        item.style.display = 'none';
+        item.style.maxHeight = '0'; // item.style.display = 'none';
       });
     }
 
     if (i >= 0) {
-      text[i].classList.add('animate__fadeInDown', 'animate__animated', 'wow');
-      text[i].style.display = 'block';
+      text[i].classList.add('active-text'); // text[i].style.display = 'block';
+
+      text[i].style.maxHeight = "".concat(text[i].firstChild.offsetHeight, "px");
+      console.log(text[i].firstChild.offsetHeight);
       header[i].classList.add('active-block');
       header[i].firstChild.style.borderBottom = 'none';
     }
-  }
+  } // accordeonTextHide();
 
-  accordeonTextHide();
+
   header.forEach(function (item, i) {
     item.addEventListener('click', function (e) {
       if (item.classList.contains('active-block')) {
-        text[i].classList.remove('animate__fadeInDown', 'animate__animated', 'wow');
-        text[i].classList.add('animate__fadeOutUp', 'animate__animated', 'wow');
+        text[i].classList.remove('active-text'); // text[i].classList.add('animate__fadeOutUp', 'animate__animated', 'wow');
+
         setTimeout(function () {
-          text[i].style.display = 'none';
+          // text[i].style.display = 'none';
+          text[i].style.maxHeight = '0';
         }, 400);
         header.forEach(function (item) {
           item.classList.remove('active-block');
