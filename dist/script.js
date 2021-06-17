@@ -5500,6 +5500,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_Replacement__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./modules/Replacement */ "./src/js/modules/Replacement.js");
 /* harmony import */ var _modules_accordeon__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./modules/accordeon */ "./src/js/modules/accordeon.js");
 /* harmony import */ var _modules_burger__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./modules/burger */ "./src/js/modules/burger.js");
+/* harmony import */ var _modules_scrolling__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./modules/scrolling */ "./src/js/modules/scrolling.js");
+
 
 
 
@@ -5530,6 +5532,7 @@ window.addEventListener('DOMContentLoaded', function () {
   Object(_modules_Replacement__WEBPACK_IMPORTED_MODULE_9__["default"])('.sizes-block');
   Object(_modules_accordeon__WEBPACK_IMPORTED_MODULE_10__["default"])();
   Object(_modules_burger__WEBPACK_IMPORTED_MODULE_11__["default"])();
+  Object(_modules_scrolling__WEBPACK_IMPORTED_MODULE_12__["default"])('.pageup');
 });
 
 /***/ }),
@@ -5599,55 +5602,30 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function accordeon() {
-  var text = document.querySelectorAll('.accordion-block'),
-      header = document.querySelectorAll('.accordion-heading');
+  var header = document.querySelectorAll('.accordion-heading');
 
-  function accordeonTextHide(i) {
-    text.forEach(function (item) {
-      // item.style.display = 'none';
-      item.style.maxHeight = '0';
-      item.classList.remove('active-text');
-    });
+  function accordeonTextHide() {
     header.forEach(function (item) {
-      item.classList.remove('active-block');
-      item.firstChild.style.borderBottom = ''; //'animate__fadeOutUp', 'animate__animated', 'wow',
-    }); //'animate__fadeInDown', 'animate__animated', 'wow',
-
-    if (!i) {
-      text.forEach(function (item) {
-        item.style.maxHeight = '0'; // item.style.display = 'none';
+      item.addEventListener('click', function () {
+        if (this.classList.contains('header-active')) {
+          this.classList.remove('header-active');
+          this.nextElementSibling.classList.remove('active-text');
+          this.nextElementSibling.style.maxHeight = '0px';
+        } else if (!this.classList.contains('header-active')) {
+          header.forEach(function (item) {
+            item.classList.remove('header-active');
+            item.nextElementSibling.classList.remove('active-text');
+            item.nextElementSibling.style.maxHeight = '0px';
+          });
+          this.classList.add('header-active');
+          this.nextElementSibling.classList.add('active-text');
+          this.nextElementSibling.style.maxHeight = this.nextElementSibling.scrollHeight + 60 + 'px';
+        }
       });
-    }
-
-    if (i >= 0) {
-      text[i].classList.add('active-text'); // text[i].style.display = 'block';
-
-      text[i].style.maxHeight = "".concat(text[i].firstChild.offsetHeight, "px");
-      console.log(text[i].firstChild.offsetHeight);
-      header[i].classList.add('active-block');
-      header[i].firstChild.style.borderBottom = 'none';
-    }
-  } // accordeonTextHide();
-
-
-  header.forEach(function (item, i) {
-    item.addEventListener('click', function (e) {
-      if (item.classList.contains('active-block')) {
-        text[i].classList.remove('active-text'); // text[i].classList.add('animate__fadeOutUp', 'animate__animated', 'wow');
-
-        setTimeout(function () {
-          // text[i].style.display = 'none';
-          text[i].style.maxHeight = '0';
-        }, 400);
-        header.forEach(function (item) {
-          item.classList.remove('active-block');
-          item.firstChild.style.borderBottom = '';
-        });
-      } else if (e.target.parentNode == item) {
-        accordeonTextHide(i);
-      }
     });
-  });
+  }
+
+  accordeonTextHide();
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (accordeon);
@@ -6233,6 +6211,63 @@ function modals() {
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (modals);
+
+/***/ }),
+
+/***/ "./src/js/modules/scrolling.js":
+/*!*************************************!*\
+  !*** ./src/js/modules/scrolling.js ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function scrolling(upSelector) {
+  var upElem = document.querySelector(upSelector);
+  window.addEventListener('scroll', function () {
+    if (document.documentElement.scrollTop >= 1650) {
+      upElem.style.opacity = 1;
+      console.log('1');
+    } else {
+      upElem.style.opacity = 0;
+    }
+  });
+  var links = document.querySelectorAll('[href^="#"]'),
+      speed = 0.2;
+  links.forEach(function (item) {
+    item.addEventListener('click', function (e) {
+      e.preventDefault();
+      var heightTop = document.documentElement.scrollTop,
+          hash = this.hash,
+          toBlock = document.querySelector(hash).getBoundingClientRect().top,
+          start = null;
+      requestAnimationFrame(step);
+
+      function step(time) {
+        if (start == null) {
+          start = time;
+        }
+
+        var progress = time - start,
+            r = toBlock < 0 ? Math.max(heightTop - progress / speed, heightTop + toBlock) : Math.min(heightTop + progress / speed, heightTop + toBlock);
+        document.documentElement.scrollTo(0, r);
+
+        if (r != heightTop + toBlock) {
+          requestAnimationFrame(step);
+        } else {
+          location.hash = hash;
+        }
+      }
+    });
+  });
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (scrolling);
 
 /***/ }),
 

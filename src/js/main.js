@@ -10,6 +10,7 @@ import filter from './modules/filter';
 import replacement from './modules/Replacement';
 import accordion from './modules/accordeon';
 import burgerNav from './modules/burger';
+import scrolling from "./modules/scrolling";
 
 new WOW().init();
 
@@ -31,4 +32,5 @@ window.addEventListener('DOMContentLoaded', () => {
         replacement('.sizes-block');
         accordion();
         burgerNav();
+        scrolling('.pageup');
 });
