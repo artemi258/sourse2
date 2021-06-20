@@ -5,7 +5,6 @@ function scrolling(upSelector) {
     window.addEventListener('scroll', () => {
         if (document.documentElement.scrollTop >= 1650) {
             upElem.style.opacity = 1;
-            console.log('1');
         } else {
             upElem.style.opacity = 0;
         }

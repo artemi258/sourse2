@@ -11,6 +11,7 @@ import replacement from './modules/Replacement';
 import accordion from './modules/accordeon';
 import burgerNav from './modules/burger';
 import scrolling from "./modules/scrolling";
+import drop from "./modules/dragAndDrop";
 
 new WOW().init();
 
@@ -33,4 +34,5 @@ window.addEventListener('DOMContentLoaded', () => {
         accordion();
         burgerNav();
         scrolling('.pageup');
+        drop();
 });

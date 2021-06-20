@@ -30,6 +30,7 @@ import {postData} from '../services/requests';
 
        upLoad.forEach(item => {
             item.addEventListener('input', () => {
+                console.log(item.files[0]);
                 let dots;
                 const arr = item.files[0].name.split('.');
                 arr[0].length > 10 ? dots = '...' : dots = '.';
@@ -68,18 +69,18 @@ import {postData} from '../services/requests';
 
                 let api;
 
-                item.closest('.popup-design') || item.classList.contains('calc_form') ? api = 'http://localhost:3000/user' : api = 'http://localhost:3000/user';
+                item.closest('.popup-design') || item.classList.contains('calc_form') ? api = path.designer : api = path.question;
                 console.log(api);
 
-             if (api == 'http://localhost:3000/user') {
+             if (api == path.designer) {
                for (let key in product) {
                    formData.append(key, product[key]);
                }
              }
 
-             const json = JSON.stringify(Object.fromEntries(formData.entries()));
+            //  const json = JSON.stringify(Object.fromEntries(formData.entries()));
 
-                postData(api, json)
+                postData(api, formData)
                 .then(res => {
                     console.log(res);
                     statusImg.setAttribute('src', message.ok);
